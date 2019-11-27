@@ -48,6 +48,12 @@ export const asyncRouterMap = [
         meta: { title: '表单页', icon: 'form', permission: [ 'form' ] },
         children: [
           {
+            path: '/form/design-form',
+            name: 'DesignForm',
+            component: () => import('@/views/form/designForm/DesignForm'),
+            meta: { title: '自定义表单', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
             path: '/form/base-form',
             name: 'BaseForm',
             component: () => import('@/views/form/BasicForm'),

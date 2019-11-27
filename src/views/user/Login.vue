@@ -155,7 +155,7 @@ export default {
       })
     // this.requiredTwoStepCaptcha = true
   },
-  mounted() {
+  mounted () {
     this.form.setFieldsValue({ username: 'admin', password: 'ant.design' })
   },
   methods: {
