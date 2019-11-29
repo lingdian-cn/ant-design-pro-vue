@@ -43,14 +43,14 @@ export const asyncRouterMap = [
       // forms
       {
         path: '/form',
-        redirect: '/form/base-form',
+        redirect: '/form/design-form',
         component: PageView,
         meta: { title: '表单页', icon: 'form', permission: [ 'form' ] },
         children: [
           {
             path: '/form/design-form',
-            name: 'DesignForm',
-            component: () => import('@/views/form/designForm/DesignForm'),
+            name: 'FormDesigner',
+            component: () => import('@/views/form/designForm/FormDesigner'),
             meta: { title: '自定义表单', keepAlive: true, permission: [ 'form' ] }
           },
           {

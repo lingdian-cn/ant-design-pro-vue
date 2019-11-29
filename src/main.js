@@ -14,7 +14,7 @@ import bootstrap from './core/bootstrap'
 import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
-
+window.Vue = Vue
 Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http
