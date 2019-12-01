@@ -63,12 +63,21 @@
           <a class="m-header-btn" @click="btnClose" style="color: red;"><a-icon type="close" /> 关闭</a>
         </div>
         <div class="m-container-center-body">
-          <!--设计器-->
+          <!--自定义表单部分-->
           <CustomizeForm :data="customizeFormData" :select.sync="customizeFormSelect"/>
         </div>
       </a-col>
       <!--右边栏-->
-      <a-col :span="6" class="m-layout-base m-component-container-right">col-6</a-col>
+      <a-col :span="6" class="m-layout-base m-component-container-right">
+        <div class="m-component-container-right-header">
+          <div class="m-config-tab" :class="{active: configTab === 'field'}" @click="configSelect('field')">字段属性</div>
+          <div class="m-config-tab" :class="{active: configTab === 'form'}" @click="configSelect('form')">表单属性</div>
+        </div>
+        <div class="m-config-body">
+          <field-config v-show="configTab === 'field'" :data="customizeFormSelect"/>
+          <form-config v-show="configTab === 'form'" :data="customizeFormData.config"/>
+        </div>
+      </a-col>
     </a-row>
   </a-modal>
 </template>
@@ -77,10 +86,14 @@
 import draggable from 'vuedraggable'
 import { basicComponents, advanceComponents, layoutComponents } from './componentsConfig'
 import CustomizeForm from './CustomizeForm'
+import FieldConfig from './FieldConfig'
+import FormConfig from './FormConfig'
 
 export default {
   name: 'FormDesigner', // 表单设计器
   components: {
+    FormConfig,
+    FieldConfig,
     CustomizeForm,
     draggable,
   },
@@ -104,15 +117,71 @@ export default {
       visible: true,
       description: '自定义表单。',
       customizeFormData: {
-        list: [],
+        list: [
+          {
+            type: 'grid',
+            name: '栅格布局',
+            icon: '',
+            key: 'abcde',
+            columns: [
+              {
+                span: 6,
+                list: []
+              },
+              {
+                span: 12,
+                list: []
+              }
+            ],
+            options: {
+              gutter: 0, // 0-24
+              justify: 'start', // start end center space-around space-between
+              align: 'top' // top middle bottom
+            }
+          },
+          {
+            type: 'input',
+            name: '单行文本框',
+            icon: '',
+            key: '123456789',
+            options: {
+              label: '单行文本框',
+              name: 'input',
+              placeholder: '单行文本框',
+              // labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
+              // wrapperCol: { span: 6, offset: 0 }, // 输入框宽度，空格
+              rules: [
+                { required: true, message: 'input is required!' },
+              ]
+            }
+          },
+        ],
         config: {
-          labelWidth: 100,
-          labelPosition: 'right',
-          size: 'small',
+          // labelWidth: 100,
+          // labelPosition: 'right',
+          size: 'default', // small, default, large
           layout: 'horizontal', // horizontal, vertical, inline
+          labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
+          wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
         },
       },
-      customizeFormSelect: null,
+      customizeFormSelect: {
+        type: 'input',
+        name: '单行文本框',
+        icon: '',
+        key: '123456789',
+        options: {
+          label: '单行文本框',
+          name: 'input',
+          placeholder: '单行文本框',
+          labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
+          wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+          rules: [
+            { required: true, message: 'input is required!' },
+          ]
+        }
+      },
+      configTab: 'form', // field form
     }
   },
   created () {
@@ -172,6 +241,10 @@ export default {
     // 关闭
     btnClose () {
       this.visible = false
+    },
+    // tab页切换
+    configSelect (val) {
+      this.configTab = val
     },
   },
 }
@@ -264,6 +337,33 @@ export default {
   }
   /*右边栏容器：属性配置*/
   .m-component-container-right {
+    padding: 0 0;
 
+    /*右边栏-头部*/
+    .m-component-container-right-header {
+      height: 50px;
+      border-bottom: solid 2px #e4e7ed;
+
+      .m-config-tab {
+        width: 50%;
+        text-align: center;
+        line-height: 50px;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .active {
+        border-bottom: 2px solid #409eff;
+        font-weight: bold;
+      }
+    }
+
+    .m-config-body {
+      height: calc(100% - 50px);
+      width: 100%;
+
+     //.m-form-config-container
+
+    }
   }
 </style>

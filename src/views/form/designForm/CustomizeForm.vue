@@ -36,7 +36,7 @@
                         v-for="(el, i) in col.list"
                         :key="el.key"
                         v-if="el.key"
-                        :data="col"
+                        :data="data"
                         :element="el"
                         :index="i"
                         :select.sync="selectItem"
