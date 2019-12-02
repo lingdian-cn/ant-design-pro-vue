@@ -9,6 +9,7 @@
       :label="element.options.label"
       :label-col="{ span: element.options.labelCol && element.options.labelCol.span ? element.options.labelCol.span : data.config.labelCol.span, offset: element.options.labelCol && element.options.labelCol.offset ? element.options.labelCol.offset : data.config.labelCol.offset }"
       :wrapper-col="{ span: element.options.wrapperCol && element.options.wrapperCol.span ? element.options.wrapperCol.span : data.config.wrapperCol.span , offset: element.options.wrapperCol && element.options.wrapperCol.offset ? element.options.wrapperCol.offset : data.config.wrapperCol.offset }"
+      @click.native.stop="handleSelectItem(index)"
     >
       <!--单行文本框-->
       <template v-if="element && element.type === 'input'">
@@ -236,7 +237,7 @@ import moment from 'moment'
 export default {
   name: 'CustomizeFormItem',
   components: {},
-  props: ['data', 'element', 'index', 'select'],
+  props: ['data', 'element', 'index', 'parent', 'select'],
   data () {
     return {
       moment,
@@ -257,9 +258,16 @@ export default {
     }
   },
   methods: {
+    // 选择
+    handleSelectItem (index) {
+      console.log('CustomizeFormItem-handleSelectItem', index)
+      this.selectItem = this.parent.list[index]
+    },
+    // 复制
     itemClone (index) {
       console.log('itemClone', index)
     },
+    // 删除
     itemDelete (index) {
       console.log('itemDelete', index)
     }

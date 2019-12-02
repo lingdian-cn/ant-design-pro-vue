@@ -22,7 +22,7 @@
                 :gutter="element.options.gutter"
                 :justify="element.options.justify"
                 type="flex"
-                @click.native="handleSelectWidget(index)"
+                @click.native="handleSelectItem(index)"
               >
                 <a-col class="m-form-grid-col" v-for="(col, colIndex) in element.columns" :key="colIndex" :span="col.span?col.span:0">
                   <draggable
@@ -37,6 +37,7 @@
                         v-for="(el, i) in col.list"
                         :key="el.key"
                         v-if="el.key"
+                        :parent="col"
                         :data="data"
                         :element="el"
                         :index="i"
@@ -62,6 +63,7 @@
                 v-if="element && element.key"
                 :key="element.key"
                 :data="data"
+                :parent="data"
                 :element="element"
                 :index="index"
                 :select.sync="selectItem"
@@ -113,22 +115,26 @@ export default {
     dragMoveStart (evt) {
       console.log('customizeForm-start-c', evt)
     },
+    // 组件拖动时回调
+    dragMove () {
+      return true
+    },
     // 组件结束拖动时回调
     dragMoveEnd (evt) {
       console.log('customizeForm-end-c', evt)
     },
+    // 添加组件
     handleAddFormItem (evt) {
       console.log('customizeForm-handleAddFormItem', evt)
     },
+    // 添加列
     handleAddCol (evt, element, colIndex) {
       console.log('customizeForm-handleAddCol', evt, element, colIndex)
     },
-    handleSelectWidget (index) {
-      console.log('customizeForm-handleSelectWidget', index)
-    },
-    // 组件拖动时回调
-    dragMove () {
-      return true
+    // 选择栅格
+    handleSelectItem (index) {
+      console.log('customizeForm-handleSelectItem', index)
+      this.selectItem = this.data.list[index]
     },
   }
 }

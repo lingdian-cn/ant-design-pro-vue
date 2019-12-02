@@ -22,7 +22,7 @@
           :move="dragMove"
         >
           <li class="m-component-left-item" v-for="(item, index) in basicComponents" :key="index">
-            <a-icon :type="item.icon || 'drag'" />&nbsp;<span>{{item.name}}</span>
+            <m-icon :type="item.icon || 'drag'" />&nbsp;&nbsp;<span>{{item.name}}</span>
           </li>
         </draggable>
         <div class="m-component-left-title">高级字段</div>
@@ -79,6 +79,22 @@
         </div>
       </a-col>
     </a-row>
+    <!--导入/生成JSON-->
+    <a-modal
+      style="height: 1px;top: 20px;"
+      :width="666"
+      :title="jsonViewTitle"
+      :visible="jsonViewVisible"
+      :closable="jsonViewType !== 1"
+      :okText="jsonViewType === 2 ? '复制':'确定'"
+      @ok="jsonViewOkBtn"
+      @cancel="jsonViewCancelBtn"
+      :bodyStyle="{ height: _height, overflow: 'auto', padding: '10px' }"
+      :destroyOnClose="true"
+    >
+      <div v-if="jsonViewType === 1" ref="setJson" style="height: 100%;">{{ jsonData }}</div>
+      <div v-if="jsonViewType === 2" ref="getJson" style="height: 100%;">{{ customizeFormData }}</div>
+    </a-modal>
   </a-modal>
 </template>
 
@@ -88,6 +104,14 @@ import { basicComponents, advanceComponents, layoutComponents } from './componen
 import CustomizeForm from './CustomizeForm'
 import FieldAttrConfig from './FieldAttrConfig'
 import FormAttrConfig from './FormAttrConfig'
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
+import ace from 'ace-builds'
+import 'ace-builds/webpack-resolver' // 在 webpack 环境中使用必须要导入
+import 'ace-builds/src-noconflict/theme-monokai' // 默认设置的主题
+import 'ace-builds/src-noconflict/mode-javascript' // 默认设置的语言模式
+Vue.use(VueClipboard)
+Vue.use(ace)
 
 export default {
   name: 'FormDesigner', // 表单设计器
@@ -115,7 +139,22 @@ export default {
       layoutComponents,
       advanceComponents,
       visible: true,
-      description: '自定义表单。',
+      jsonViewVisible: false,
+      jsonViewTitle: '',
+      jsonViewType: 0, // 1导入json，2生成json
+      jsonData: {},
+      aceEditor: null,
+      themePath: 'ace/theme/monokai', // 不导入 webpack-resolver，该模块路径会报错
+      modePath: 'ace/mode/javascript', // 同上
+      defaultFormData: {
+        list: [],
+        config: {
+          size: 'default', // small, default, large
+          layout: 'horizontal', // horizontal, vertical, inline
+          labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
+          wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+        }
+      },
       customizeFormData: {
         list: [
           {
@@ -148,8 +187,8 @@ export default {
               label: '单行文本框',
               name: 'input',
               placeholder: '单行文本框',
-              // labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
-              // wrapperCol: { span: 6, offset: 0 }, // 输入框宽度，空格
+              labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
+              wrapperCol: { span: 6, offset: 0 }, // 输入框宽度，空格
               required: true,
               rules: [
                 { required: true, message: 'input is required!' },
@@ -158,14 +197,13 @@ export default {
           },
         ],
         config: {
-          // labelWidth: 100,
-          // labelPosition: 'right',
           size: 'default', // small, default, large
           layout: 'horizontal', // horizontal, vertical, inline
           labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
           wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
         },
       },
+      // customizeFormSelect: {},
       customizeFormSelect: {
         type: 'input',
         name: '单行文本框',
@@ -208,6 +246,7 @@ export default {
   },
   created () {
     console.log('w-h', document.body.clientWidth, document.body.clientHeight)
+    this.customizeFormSelect = this.customizeFormData.list[1]
   },
   mounted () {
   },
@@ -218,6 +257,9 @@ export default {
       } else {
         return document.body.clientWidth + 'px'
       }
+    },
+    _height () {
+      return document.body.clientHeight - 150 + 'px'
     },
     _modalBodyStyle () {
       if (this.modalBodyStyle) {
@@ -240,13 +282,52 @@ export default {
     dragMove () {
       return true
     },
+    // 设置json
+    setJson (json) {
+      if (json) {
+        if (!json.list) json.list = []
+        this.customizeFormData = json
+        if (json.list.length > 0) this.customizeFormSelect = json.list[0]
+        this.$message.success('设置成功！')
+        this.jsonViewVisible = false
+      } else {
+        this.$message.warn('请输入正确的JSON数据！')
+      }
+    },
+    // ace editor初始化
+    aceInit (el, options, mode) {
+      this.aceEditor = ace.edit(el, Object.assign({
+        // maxLines: 9999999, // 最大行数，超过会自动出现滚动条
+        minLines: 60, // 最小行数，还未到最大行数时，编辑器会自动伸缩大小
+        fontSize: 13, // 编辑器内字体大小
+        theme: this.themePath, // 默认设置的主题
+        mode: this.modePath, // 默认设置的语言模式
+        tabSize: 2, // 制表符设置为 2 个空格大小
+        readOnly: false, // 是否只读
+      }, options))
+      this.aceEditor.session.setMode( mode || 'ace/mode/json')
+    },
     // 导入json
     btnImport () {
-
+      this.jsonData = null
+      this.jsonData = this.defaultFormData
+      this.jsonViewTitle = '导入JSON'
+      this.jsonViewVisible = true
+      this.jsonViewType = 1
+      this.$nextTick(() => {
+        this.aceInit(this.$refs.setJson)
+        // this.aceEditor.setValue(JSON.stringify(this.defaultFormData))
+      })
     },
     // 生成json
     btnJson () {
-
+      this.jsonViewTitle = '生成JSON'
+      this.jsonViewVisible = true
+      this.jsonViewType = 2
+      this.$nextTick(() => {
+        this.aceInit(this.$refs.getJson, { readOnly: true })
+        // this.aceEditor.session.setValue(JSON.stringify(this.customizeFormData))
+      })
     },
     // 预览
     btnPreview () {
@@ -254,7 +335,8 @@ export default {
     },
     // 清空
     btnClear () {
-
+      this.customizeFormData = this.defaultFormData
+      this.customizeFormSelect = {}
     },
     // 保存
     btnSave () {
@@ -264,11 +346,30 @@ export default {
     btnClose () {
       this.visible = false
     },
+    // json窗口确认/复制按钮回调
+    jsonViewOkBtn () {
+      if (this.jsonViewType === 1) { // 设置json
+        this.setJson(JSON.parse(this.aceEditor.getValue()))
+        // this.jsonViewVisible = false
+      } else if (this.jsonViewType === 2) { // 复制json
+        this.$copyText(this.aceEditor.getValue(), this.$refs.getJson).then(res => {
+          // console.log('$copyText-res', res)
+          this.$message.success('复制成功！')
+        }).catch(err => {
+          console.log('$copyText-err', err)
+          this.$message.error('复制失败！')
+        })
+      }
+    },
+    // json窗口取消按钮回调
+    jsonViewCancelBtn () {
+      this.jsonViewVisible = false
+    },
     // tab页切换
     configSelect (val) {
       this.configTab = val
-    },
-  },
+    }
+  }
 }
 </script>
 <style scoped lang="less">

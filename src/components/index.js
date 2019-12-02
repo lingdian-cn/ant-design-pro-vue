@@ -29,11 +29,17 @@ import ExceptionPage from '@/components/Exception'
 import StandardFormRow from '@/components/StandardFormRow'
 import ArticleListContent from '@/components/ArticleListContent'
 
+// lingdian
+import MIcon from '@/components/MIcon'
+
+import Vue from 'vue'
+
 export {
   AvatarList,
   Bar,
   ChartCard,
   Liquid,
+  MIcon,
   MiniArea,
   MiniSmoothArea,
   MiniBar,
@@ -60,3 +66,5 @@ export {
   StandardFormRow,
   ArticleListContent
 }
+
+Vue.use(MIcon)

@@ -9,7 +9,7 @@ const formConfigData = {
     {
       type: 'grid',
       name: '栅格布局',
-      icon: '',
+      icon: 'ld-form-grid',
       columns: [
         {
           span: 12,
@@ -29,7 +29,7 @@ const formConfigData = {
     {
       type: 'input',
       name: '单行文本框',
-      icon: '',
+      icon: 'ld-form-input',
       options: {
         label: '单行文本框',
         name: 'input',
@@ -44,7 +44,7 @@ const formConfigData = {
     {
       type: 'textarea',
       name: '多行文本框',
-      icon: '',
+      icon: 'ld-form-textarea',
       options: {
         label: '多行文本框',
         name: 'textarea',
@@ -60,7 +60,7 @@ const formConfigData = {
     {
       type: 'radio',
       name: '单选框',
-      icon: '',
+      icon: 'ld-form-radio',
       options: {
         label: '单选框',
         name: 'radio',
@@ -77,7 +77,7 @@ const formConfigData = {
     {
       type: 'checkbox',
       name: '多选框',
-      icon: '',
+      icon: 'ld-form-checkbox',
       options: {
         label: '多选框',
         name: 'checkbox',
@@ -96,7 +96,7 @@ const formConfigData = {
     {
       type: 'select',
       name: '下拉选择框',
-      icon: '',
+      icon: 'ld-form-select',
       options: {
         label: '下拉选择框',
         name: 'select',
@@ -124,7 +124,7 @@ const formConfigData = {
     {
       type: 'input-number',
       name: '数字框',
-      icon: '',
+      icon: 'ld-form-input-num',
       options: {
         label: '数字框',
         name: 'input_number',
@@ -142,7 +142,7 @@ const formConfigData = {
     {
       type: 'datetime',
       name: '日期选择器',
-      icon: '',
+      icon: 'ld-form-datetime',
       options: {
         type: 'datetime', // date, datetime
         label: '日期选择器',
@@ -159,7 +159,7 @@ const formConfigData = {
     {
       type: 'time',
       name: '时间选择器',
-      icon: '',
+      icon: 'ld-form-time',
       options: {
         label: '时间选择器',
         name: 'time',
@@ -171,7 +171,7 @@ const formConfigData = {
     {
       type: 'switch',
       name: '开关',
-      icon: '',
+      icon: 'ld-form-switch',
       options: {
         label: '开关',
         name: 'switch',
@@ -183,7 +183,7 @@ const formConfigData = {
     {
       type: 'rate',
       name: '评分',
-      icon: '',
+      icon: 'ld-form-rate',
       options: {
         label: '评分',
         name: 'rate',
@@ -198,7 +198,7 @@ const formConfigData = {
     {
       type: 'slider',
       name: '滑块',
-      icon: '',
+      icon: 'ld-form-sliders',
       options: {
         label: '滑块',
         name: 'slider',
@@ -213,7 +213,7 @@ const formConfigData = {
     {
       type: 'color',
       name: '颜色选择器',
-      icon: '',
+      icon: 'ld-form-color',
       options: {
 
       }

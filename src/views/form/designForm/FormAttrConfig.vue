@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: 'FormConfig',
+  name: 'FormAttrConfig',
   props: ['data'],
   mounted () {
 
@@ -56,6 +56,7 @@ export default {
     overflow-y: auto;
     -ms-overflow-y: auto;
     padding-left: 10px;
+    padding-right: 10px;
 
     .m-form-config-item {
       text-align: center;
