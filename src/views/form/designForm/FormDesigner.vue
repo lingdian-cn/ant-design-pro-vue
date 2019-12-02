@@ -74,8 +74,8 @@
           <div class="m-config-tab" :class="{active: configTab === 'form'}" @click="configSelect('form')">表单属性</div>
         </div>
         <div class="m-config-body">
-          <field-config v-show="configTab === 'field'" :data="customizeFormSelect"/>
-          <form-config v-show="configTab === 'form'" :data="customizeFormData.config"/>
+          <FieldAttrConfig v-show="configTab === 'field'" :data="customizeFormSelect"/>
+          <FormAttrConfig v-show="configTab === 'form'" :data="customizeFormData.config"/>
         </div>
       </a-col>
     </a-row>
@@ -86,14 +86,14 @@
 import draggable from 'vuedraggable'
 import { basicComponents, advanceComponents, layoutComponents } from './componentsConfig'
 import CustomizeForm from './CustomizeForm'
-import FieldConfig from './FieldConfig'
-import FormConfig from './FormConfig'
+import FieldAttrConfig from './FieldAttrConfig'
+import FormAttrConfig from './FormAttrConfig'
 
 export default {
   name: 'FormDesigner', // 表单设计器
   components: {
-    FormConfig,
-    FieldConfig,
+    FieldAttrConfig,
+    FormAttrConfig,
     CustomizeForm,
     draggable,
   },
@@ -125,7 +125,7 @@ export default {
             key: 'abcde',
             columns: [
               {
-                span: 6,
+                span: 12,
                 list: []
               },
               {
@@ -150,6 +150,7 @@ export default {
               placeholder: '单行文本框',
               // labelCol: { span: 6, offset: 0 }, // 标签宽度，空格
               // wrapperCol: { span: 6, offset: 0 }, // 输入框宽度，空格
+              required: true,
               rules: [
                 { required: true, message: 'input is required!' },
               ]
@@ -181,6 +182,27 @@ export default {
           ]
         }
       },
+      // customizeFormSelect: {
+      //   type: 'grid',
+      //   name: '栅格布局',
+      //   icon: '',
+      //   key: 'abcde',
+      //   columns: [
+      //     {
+      //       span: 12,
+      //       list: []
+      //     },
+      //     {
+      //       span: 12,
+      //       list: []
+      //     }
+      //   ],
+      //   options: {
+      //     gutter: 0, // 0-24
+      //     justify: 'start', // start end center space-around space-between
+      //     align: 'top' // top middle bottom
+      //   }
+      // },
       configTab: 'form', // field form
     }
   },
@@ -299,9 +321,9 @@ export default {
         &:hover {
           /*color: $primary-color;
           border: 1px dashed $primary-color;*/
-          color:  @primary-color;
-          border: 1px dashed  @primary-color;
-          background-color: #7bece299;
+          color:  #fff;
+          border: 1px dashed  #fff;
+          background-color: @primary-color;
         }
       }
     }
