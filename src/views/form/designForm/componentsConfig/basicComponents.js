@@ -7,8 +7,8 @@ export const basicComponents = [
       label: '单行文本框',
       name: 'input',
       placeholder: '单行文本框',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       rules: [
         { required: true, message: 'input is required!' },
       ]
@@ -23,8 +23,8 @@ export const basicComponents = [
       name: 'textarea',
       placeholder: '多行文本框',
       rows: 6, // 文本域行数
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       rules: [
         { required: true, message: 'textarea is required!' },
       ]
@@ -38,8 +38,8 @@ export const basicComponents = [
       label: '单选框',
       name: 'radio',
       type: 'button', // button default
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       data: [
         { text: 'A', value: 1, checked: true, disabled: false },
         { text: 'B', value: 2, checked: false, disabled: false },
@@ -54,8 +54,8 @@ export const basicComponents = [
     options: {
       label: '多选框',
       name: 'checkbox',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       colSpan: 2, // 每项列宽
       data: [
         { text: 'A', value: 1, checked: true, disabled: true },
@@ -74,8 +74,8 @@ export const basicComponents = [
       label: '下拉选择框',
       name: 'select',
       placeholder: '下拉选择框',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       rules: [
         { required: true, message: 'select is required!', type: 'array' },
       ],
@@ -97,12 +97,12 @@ export const basicComponents = [
   {
     type: 'input-number',
     name: '数字框',
-    icon: 'ld-form-input-num',
+    icon: 'ld-form-input-num3',
     options: {
       label: '数字框',
       name: 'input_number',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       initialValue: 1,
       suffixText: '%',
       min: 0,
@@ -120,8 +120,8 @@ export const basicComponents = [
       type: 'datetime', // date, datetime
       label: '日期选择器',
       name: 'datetime',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       rules: [
         { required: true, message: 'datetime is required!' },
       ],
@@ -136,8 +136,8 @@ export const basicComponents = [
     options: {
       label: '时间选择器',
       name: 'time',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       rules: [{ required: true, message: 'time is required!' }],
     }
   },
@@ -148,8 +148,8 @@ export const basicComponents = [
     options: {
       label: '开关',
       name: 'switch',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       rules: [{ required: true, message: 'switch is required!' }]
     }
   },
@@ -160,8 +160,8 @@ export const basicComponents = [
     options: {
       label: '评分',
       name: 'rate',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       count: 5,
       initialValue: 3.5,
       allowHalf: true,
@@ -175,8 +175,8 @@ export const basicComponents = [
     options: {
       label: '滑块',
       name: 'slider',
-      labelCol: { span: 12, offset: 0 }, // 标签宽度，空格
-      wrapperCol: { span: 12, offset: 0 }, // 输入框宽度，空格
+      labelCol: { span: 0, offset: 0 }, // 标签宽度，空格
+      wrapperCol: { span: 0, offset: 0 }, // 输入框宽度，空格
       suffixText: '%',
       min: 0,
       max: 100,
@@ -186,7 +186,7 @@ export const basicComponents = [
   {
     type: 'color',
     name: '颜色选择器',
-    icon: 'ld-form-color',
+    // icon: 'ld-form-color',
     options: {
 
     }

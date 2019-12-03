@@ -79,6 +79,7 @@
 <script>
 import Draggable from 'vuedraggable'
 import CustomizeFormItem from './CustomizeFormItem'
+import { basicComponents, higherComponents, layoutComponents } from './componentsConfig'
 
 export default {
   name: 'CustomizeForm', // 自定义表单
@@ -123,19 +124,71 @@ export default {
     dragMoveEnd (evt) {
       console.log('customizeForm-end-c', evt)
     },
+    // 添加项
+    addItem (evt) {
+      let { from, oldIndex, newIndex} = evt, item;
+      if (from.className.indexOf('basic') > -1) {
+        item = basicComponents[oldIndex]
+      } else if (from.className.indexOf('higher') > -1) {
+        item = higherComponents[oldIndex]
+      } else if (from.className.indexOf('layout') > -1) {
+        item = layoutComponents[oldIndex]
+      }
+      if (item.icon) {
+        return { ...item, ...{ key: item.type + '_' + Date.now() + '_' + Math.ceil(Math.random() * 99999) } }
+      } else {
+        return null
+      }
+    },
     // 添加组件
     handleAddFormItem (evt) {
       console.log('customizeForm-handleAddFormItem', evt)
+      let item = this.addItem(evt)
+      if (item) {
+        this.data.list.splice(evt.newIndex, 0, item)
+        this.selectItem = this.data.list[evt.newIndex]
+      }
     },
     // 添加列
     handleAddCol (evt, element, colIndex) {
       console.log('customizeForm-handleAddCol', evt, element, colIndex)
+      let item = this.addItem(evt)
+      if (item) {
+        element.columns[colIndex].list.splice(evt.newIndex, 0, item)
+        this.selectItem = element.columns[colIndex].list[evt.newIndex]
+      }
     },
     // 选择栅格
     handleSelectItem (index) {
       console.log('customizeForm-handleSelectItem', index)
       this.selectItem = this.data.list[index]
     },
+    // 复制
+    itemClone (index) {
+      console.log('CustomizeForm-itemClone', index)
+      let oldItem = this.data.list[index]
+      let newItem = { ...oldItem, ...{ key: oldItem.type + '_' + Date.now() + '_' + Math.ceil(Math.random() * 99999) } }
+      this.data.list.splice(index, 0, newItem)
+      this.$nextTick(() => {
+        this.selectItem = this.data.list[index + 1]
+      })
+    },
+    // 删除
+    itemDelete (index) {
+      console.log('CustomizeForm-itemDelete', index)
+      if (this.data.list.length - 1 === index) {
+        if (index === 0) {
+          this.selectItem = {}
+        } else {
+          this.selectItem = this.data.list[index - 1]
+        }
+      } else {
+        this.selectItem = this.data.list[index + 1]
+      }
+      this.$nextTick(() => {
+        this.data.list.splice(index, 1)
+      })
+    }
   }
 }
 </script>
@@ -259,7 +312,21 @@ export default {
 
           }
 
+          /*TODO 此处设置无效，待处理*/
+          li.m-component-left-item.sortable-chosen.ghost {
+            background: #F56C6C;
+            border: 2px solid #F56C6C;
+            outline-width: 0;
+            height: 30px;
+            box-sizing: border-box;
+            font-size: 0;
+            content: '';
+            overflow: hidden;
+            padding: 0;
+          }
+
         }
+
       }
     }
 

@@ -1,5 +1,5 @@
 import { basicComponents } from './basicComponents'
-import { advanceComponents } from './advanceComponents'
+import { higherComponents } from './higherComponents'
 import { layoutComponents } from './layoutComponents'
 
-export { basicComponents, advanceComponents, layoutComponents }
+export { basicComponents, higherComponents, layoutComponents }

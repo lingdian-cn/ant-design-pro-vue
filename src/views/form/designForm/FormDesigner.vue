@@ -15,6 +15,7 @@
         <div class="m-component-left-title">基础字段</div>
         <draggable
           tag="ul"
+          class="basic"
           :list="basicComponents"
           v-bind="{group:{ name:'people', pull:'clone', put:false}, sort:false, ghostClass: 'ghost'}"
           @end="dragMoveEnd"
@@ -22,25 +23,27 @@
           :move="dragMove"
         >
           <li class="m-component-left-item" v-for="(item, index) in basicComponents" :key="index">
-            <m-icon :type="item.icon || 'drag'" />&nbsp;&nbsp;<span>{{item.name}}</span>
+            <m-icon :type="item.icon || 'ld-form-drag'" /><span>{{item.name}}</span>
           </li>
         </draggable>
         <div class="m-component-left-title">高级字段</div>
         <draggable
           tag="ul"
-          :list="advanceComponents"
+          class="higher"
+          :list="higherComponents"
           v-bind="{group:{ name:'people', pull:'clone', put:false}, sort:false, ghostClass: 'ghost'}"
           @end="dragMoveEnd"
           @start="dragMoveStart"
           :move="dragMove"
         >
-          <li class="m-component-left-item" v-for="(item, index) in advanceComponents" :key="index">
-            <a-icon :type="item.icon || 'drag'" />&nbsp;<span>{{item.name}}</span>
+          <li class="m-component-left-item" v-for="(item, index) in higherComponents" :key="index">
+            <m-icon :type="item.icon || 'ld-form-drag'" /><span>{{item.name}}</span>
           </li>
         </draggable>
         <div class="m-component-left-title">布局字段</div>
         <draggable
           tag="ul"
+          class="layout"
           :list="layoutComponents"
           v-bind="{group:{ name:'people', pull:'clone', put:false}, sort:false, ghostClass: 'ghost'}"
           @end="dragMoveEnd"
@@ -48,19 +51,19 @@
           :move="dragMove"
         >
           <li class="m-component-left-item" v-for="(item, index) in layoutComponents" :key="index">
-            <a-icon :type="item.icon || 'drag'" />&nbsp;<span>{{item.name}}</span>
+            <m-icon :type="item.icon || 'ld-form-drag'" /><span>{{item.name}}</span>
           </li>
         </draggable>
       </a-col>
       <!--中间栏-->
       <a-col :span="13" class="m-layout-base m-component-container-center">
         <div class="m-container-center-header">
-          <a class="m-header-btn" @click="btnImport"><a-icon type="to-top" /> 导入Json</a>
-          <a class="m-header-btn" @click="btnJson"><a-icon type="file-text" /> 生成Json</a>
-          <a class="m-header-btn" @click="btnPreview"><a-icon type="eye" /> 预览</a>
-          <a class="m-header-btn" @click="btnClear" style="color: red;"><a-icon type="delete" /> 清空</a>
-          <a class="m-header-btn" @click="btnSave"><a-icon type="save" /> 保存</a>
-          <a class="m-header-btn" @click="btnClose" style="color: red;"><a-icon type="close" /> 关闭</a>
+          <a class="m-header-btn" @click="btnImport"><a-icon type="to-top" />导入Json</a>
+          <a class="m-header-btn" @click="btnJson"><a-icon type="file-text" />生成Json</a>
+          <a class="m-header-btn" @click="btnPreview"><a-icon type="eye" />预览</a>
+          <a class="m-header-btn" @click="btnClear" style="color: red;"><a-icon type="delete" />清空</a>
+          <a class="m-header-btn" @click="btnSave"><a-icon type="save" />保存</a>
+          <a class="m-header-btn" @click="btnClose" style="color: red;"><a-icon type="close" />关闭</a>
         </div>
         <div class="m-container-center-body">
           <!--自定义表单部分-->
@@ -100,7 +103,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { basicComponents, advanceComponents, layoutComponents } from './componentsConfig'
+import { basicComponents, higherComponents, layoutComponents } from './componentsConfig'
 import CustomizeForm from './CustomizeForm'
 import FieldAttrConfig from './FieldAttrConfig'
 import FormAttrConfig from './FormAttrConfig'
@@ -136,8 +139,8 @@ export default {
   data () {
     return {
       basicComponents,
+      higherComponents,
       layoutComponents,
-      advanceComponents,
       visible: true,
       jsonViewVisible: false,
       jsonViewTitle: '',
@@ -241,7 +244,7 @@ export default {
       //     align: 'top' // top middle bottom
       //   }
       // },
-      configTab: 'form', // field form
+      configTab: 'field' // field form
     }
   },
   created () {
@@ -392,6 +395,12 @@ export default {
       font-size: 13px;
     }
 
+    .ghost {
+      /*min-height: 50px;*/
+      /*background-color: #fff;*/
+      /*outline: 1px dashed #F56C6C;*/
+    }
+
     /*列表*/
     ul {
       position: relative;
@@ -426,9 +435,14 @@ export default {
           border: 1px dashed  #fff;
           background-color: @primary-color;
         }
+
+        span {
+          margin-left: 10px;
+        }
       }
     }
   }
+
   /*中间容器：按钮，设计部分*/
   .m-component-container-center {
     padding: 0 0;
@@ -447,6 +461,10 @@ export default {
       .m-header-btn {
         margin: 0 10px;
         white-space: pre;
+
+        i {
+          margin-right: 5px;
+        }
       }
     }
 

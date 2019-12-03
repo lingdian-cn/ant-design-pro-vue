@@ -2,15 +2,15 @@
   <div
     class="m-form-item-container"
     :class="{active: selectItem.key === element.key, 'required': element.options.required}"
-  >
+    @click="handleSelectItem(index)"
+  ><!--@click.self.prevent.stop="handleSelectItem(index)"-->
     <a-form-item
       class="m-a-form-item"
       v-if="element && element.key && element.options"
       :label="element.options.label"
       :label-col="{ span: element.options.labelCol && element.options.labelCol.span ? element.options.labelCol.span : data.config.labelCol.span, offset: element.options.labelCol && element.options.labelCol.offset ? element.options.labelCol.offset : data.config.labelCol.offset }"
       :wrapper-col="{ span: element.options.wrapperCol && element.options.wrapperCol.span ? element.options.wrapperCol.span : data.config.wrapperCol.span , offset: element.options.wrapperCol && element.options.wrapperCol.offset ? element.options.wrapperCol.offset : data.config.wrapperCol.offset }"
-      @click.native.stop="handleSelectItem(index)"
-    >
+    ><!--@click.native.stop="handleSelectItem(index)"-->
       <!--单行文本框-->
       <template v-if="element && element.type === 'input'">
         <a-input
@@ -200,12 +200,12 @@
         <a-slider
           :disabled="element.options.disabled"
           v-decorator="[
-         element.options.name,
-         {
-           initialValue: element.options.initialValue?element.options.initialValue:0,
-           rules: element.options.required?[{ required: true, message: element.options.message?element.options.message:'required' }]: []
-         }
-        ]"
+           element.options.name,
+           {
+             initialValue: element.options.initialValue?element.options.initialValue:0,
+             rules: element.options.required?[{ required: true, message: element.options.message?element.options.message:'required' }]: []
+           }
+          ]"
           :marks="element.options.marks?element.options.marks:{}"
           :tipFormatter="val => (val+element.options.suffixText?element.options.suffixText:'')"
         />
@@ -265,11 +265,30 @@ export default {
     },
     // 复制
     itemClone (index) {
-      console.log('itemClone', index)
+      console.log('CustomizeFormItem-itemClone', index)
+      let oldItem = this.parent.list[index]
+      let newItem = { ...oldItem, ...{ key: oldItem.type + '_' + Date.now() + '_' + Math.ceil(Math.random() * 99999) } }
+      console.log('------', oldItem, newItem)
+      this.parent.list.splice(index, 0, newItem)
+      this.$nextTick(() => {
+        this.selectItem = this.parent.list[index + 1]
+      })
     },
     // 删除
     itemDelete (index) {
-      console.log('itemDelete', index)
+      console.log('CustomizeFormItem-itemDelete', index)
+      if (this.parent.list.length - 1 === index) {
+        if (index === 0) {
+          this.selectItem = {}
+        } else {
+          this.selectItem = this.parent.list[index - 1]
+        }
+      } else {
+        this.selectItem = this.parent.list[index + 1]
+      }
+      this.$nextTick(() => {
+        this.parent.list.splice(index, 1)
+      })
     }
   }
 }
