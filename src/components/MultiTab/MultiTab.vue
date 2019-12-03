@@ -1,4 +1,6 @@
 <script>
+import events from './events'
+
 export default {
   name: 'MultiTab',
   data () {
@@ -10,6 +12,28 @@ export default {
     }
   },
   created () {
+    // bind event
+    events.$on('open', val => {
+      if (!val) {
+        throw new Error(`multi-tab: open tab ${val} err`)
+      }
+      this.activeKey = val
+    }).$on('close', val => {
+      if (!val) {
+        this.closeThat(this.activeKey)
+        return
+      }
+      this.closeThat(val)
+    }).$on('rename', ({ key, name }) => {
+      console.log('rename', key, name)
+      try {
+        const item = this.pages.find(item => item.path === key)
+        item.meta.customTitle = name
+        this.$forceUpdate()
+      } catch (e) {
+      }
+    })
+
     this.pages.push(this.$route)
     this.fullPathList.push(this.$route.fullPath)
     this.selectedLastPath()
@@ -113,7 +137,7 @@ export default {
       return (
         <a-tab-pane
           style={{ height: 0 }}
-          tab={this.renderTabPane(page.meta.title, page.fullPath)}
+          tab={this.renderTabPane(page.meta.customTitle || page.meta.title, page.fullPath)}
           key={page.fullPath} closable={pages.length > 1}
         >
         </a-tab-pane>)
